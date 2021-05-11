@@ -26,66 +26,37 @@ const getAllBooks = (request, h) => {
   if (finished){
     let getBookByFinished = [];
   
-    if (finished === 1) {
+    if (finished == 1) {
       getBookByFinished = books.map((book) => {
-        if (book.finished){
+        if (book.finished == true) {
           return book;
         }
       });
     }
     
-    if (finished === 0) {
+    if (finished == 0) {
       getBookByFinished = books.map((book) => {
-      if (!book.finished){
-        return book
-      }
-      });
-    }
-
-    if (getBookByFinished.length > 0) {  
-      const result = getBookByFinished.map((book) => ({
-        id: book.id,
-        name: book.name,
-        publisher: book.publisher,
-      }));
-
-      const response = h.response({
-        status:'success',
-        data: {
-        books: result,
-      },
-      });
-      response.code(200);
-      return response;
-    }
-}
-
-  if (reading){
-    let getBookByReading = [];
-
-    if (reading === 1) {
-      getBookByReading = books.map((book) => {
-        if (book.reading){
-          return book
+        if (book.finished == false) {
+          return book;
         }
       });
     }
-    
-    if (reading === 0) {
-      getBookByReading = books.map((book) => {
-        if (!book.reading){
-          return book
+
+    if (getBookByFinished !== undefined) {
+      let temp = {};
+      const result = [];
+
+      getBookByFinished.filter((book) => {
+        if (book !== undefined) { 
+          temp.id = book.id;
+          temp.name = book.name;
+          temp.publisher = book.publisher;
+          
+          result.push(temp) ;
         }
       });
-    }
-    
-    if (getBookByReading.length > 0) {
-      const result = getBookByReading.map((book) => ({
-        id: book.id,
-        name: book.name,
-        publisher: book.publisher,
-      }));
-  
+
+
       const response = h.response({
         status:'success',
         data: {
@@ -94,8 +65,53 @@ const getAllBooks = (request, h) => {
       });
       response.code(200);
       return response;
-    }    
+      }   
   }
+
+  if (reading) {
+    let getBookByReading = [];
+
+    if (reading == 1) {
+      getBookByReading = books.map((book) => {
+        if (book.reading == true) {
+          return book;
+        }
+      });
+    }
+    
+    if (reading == 0) {
+      getBookByReading = books.map((book) => {
+        if (book.reading == false) {
+          return book;
+        }
+      });
+    }
+
+    if (getBookByReading !== undefined) {
+      let temp = {};
+      const result = [];
+
+      getBookByReading.filter((book) => {
+        if (book !== undefined) { 
+          temp.id = book.id;
+          temp.name = book.name;
+          temp.publisher = book.publisher;
+          
+          result.push(temp) ;
+        }
+      });
+
+
+      const response = h.response({
+        status:'success',
+        data: {
+          books: result,
+        },
+      });
+      response.code(200);
+      return response;
+      }   
+    }
 
   const book = books.map(e => ({
     id: e.id,
